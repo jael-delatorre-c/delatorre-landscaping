@@ -1,70 +1,64 @@
-import Image from "next/image";
+import Link from "next/link";
 import { Hero } from "@/components/Hero";
+import { TrustStrip } from "@/components/TrustStrip";
 import { ServicesGrid } from "@/components/ServicesGrid";
 import { PortfolioPreview } from "@/components/PortfolioPreview";
-import { GallerySection } from "@/components/GallerySection";
+import { WhyDelatorre } from "@/components/WhyDelatorre";
 import { CTASection } from "@/components/CTASection";
-import { ScrollGradient } from "@/components/ScrollGradient";
 import { ScrollFadeSection } from "@/components/ScrollFadeSection";
-import Link from "next/link";
-import {
-  services,
-  portfolioPreviewItems,
-  galleryItems,
-} from "@/lib/data";
-import { HERO_IMAGE, SERVICES_IMAGE } from "@/lib/images";
+import { ArrowRightIcon } from "@/components/Icons";
+import { services, portfolioPreviewItems } from "@/lib/data";
+import { HERO_IMAGE, HERO_IMAGE_ALT } from "@/lib/images";
 
 export default function HomePage() {
   return (
-    <ScrollGradient>
+    <>
       <Hero
-        headline="Premium Landscaping. Clean Lines. Lasting Result."
+        eyebrow="Dutchess County, NY"
+        headline="Premium Landscaping. Clean Lines. Lasting Results."
         subline="High-quality installs, sharp weekly maintenance, and outdoor upgrades that stay looking new."
-        ctaText="Get a Quote"
+        ctaText="Get a Free Estimate"
         ctaHref="/contact"
         heroImageSrc={HERO_IMAGE}
+        heroImageAlt={HERO_IMAGE_ALT}
       />
-      <ScrollFadeSection>
-        <section className="py-16 sm:py-20 lg:py-24">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold tracking-tight text-neutral-900">
-              Our Services
-            </h2>
-            <p className="mt-4 max-w-2xl text-neutral-600">
-              From weekly maintenance to seasonal cleanups and stormwork, we keep your property looking sharp.
-            </p>
-            <div className="mt-10 aspect-[21/9] max-w-4xl relative rounded-lg overflow-hidden bg-neutral-200">
-              <Image
-                src={SERVICES_IMAGE}
-                alt="Weekly lawn striping and grounds maintenance"
-                fill
-                className="object-cover"
-                sizes="(max-width: 896px) 100vw, 896px"
-              />
-            </div>
-            <div className="mt-10">
-              <ServicesGrid services={services} />
-            </div>
-            <div className="mt-10 text-center">
+      <TrustStrip />
+
+      <section className="section-pad bg-forest">
+        <div className="container-lux">
+          <ScrollFadeSection>
+            <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
+              <div className="max-w-2xl">
+                <p className="eyebrow">Our Services</p>
+                <h2 className="heading-serif mt-4 text-4xl text-cream sm:text-5xl">
+                  Year-round care for properties that stand out.
+                </h2>
+                <p className="mt-5 text-lg leading-relaxed text-body">
+                  From weekly maintenance to seasonal cleanups and stormwork, we keep your property looking sharp.
+                </p>
+              </div>
               <Link
                 href="/services"
-                className="text-sm font-medium text-neutral-600 hover:text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 rounded"
+                className="group inline-flex shrink-0 items-center gap-2 border-b border-gold/40 pb-1 text-sm font-semibold text-gold transition-colors hover:border-gold"
               >
                 View all services
+                <ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
-          </div>
-        </section>
-      </ScrollFadeSection>
+          </ScrollFadeSection>
+          <ScrollFadeSection className="mt-12">
+            <ServicesGrid services={services} linkHref={() => "/services"} />
+          </ScrollFadeSection>
+        </div>
+      </section>
+
       <ScrollFadeSection>
         <PortfolioPreview items={portfolioPreviewItems} />
       </ScrollFadeSection>
       <ScrollFadeSection>
-        <GallerySection items={galleryItems} />
+        <WhyDelatorre />
       </ScrollFadeSection>
-      <ScrollFadeSection>
-        <CTASection />
-      </ScrollFadeSection>
-    </ScrollGradient>
+      <CTASection />
+    </>
   );
 }

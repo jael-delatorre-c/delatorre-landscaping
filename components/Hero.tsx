@@ -1,79 +1,63 @@
 import Link from "next/link";
 import Image from "next/image";
+import { contact } from "@/lib/data";
+import { PhoneIcon } from "@/components/Icons";
 
 interface HeroProps {
-  headline?: string;
-  subline?: string;
+  eyebrow?: string;
+  headline: string;
+  subline: string;
   ctaText?: string;
   ctaHref?: string;
-  heroImageSrc?: string;
+  heroImageSrc: string;
+  heroImageAlt: string;
 }
 
 export function Hero({
-  headline = "[Hero Headline]",
-  subline = "[Hero subline or supporting copy.]",
-  ctaText = "Get a Quote",
+  eyebrow = "Dutchess County, NY",
+  headline,
+  subline,
+  ctaText = "Get a Free Estimate",
   ctaHref = "/contact",
   heroImageSrc,
+  heroImageAlt,
 }: HeroProps) {
   return (
-    <section className="relative overflow-hidden">
-      {/* Full-width hero image with overlay and text on top */}
-      {heroImageSrc ? (
-        <div className="relative w-screen left-1/2 -translate-x-1/2 h-[70vh] min-h-[420px] max-h-[900px] bg-neutral-200">
-          <Image
-            src={heroImageSrc}
-            alt=""
-            fill
-            className="object-cover"
-            priority
-            sizes="100vw"
-          />
-          {/* Dark gradient overlay for text readability */}
-          <div
-            className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/30"
-            aria-hidden
-          />
-          {/* Headline and CTA over image */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-4xl text-center">
-              <h1 className="text-4xl font-bold tracking-tight text-white drop-shadow-lg sm:text-5xl lg:text-6xl">
-                {headline}
-              </h1>
-              <p className="mx-auto mt-6 max-w-2xl text-lg text-white/95 drop-shadow-md">
-                {subline}
-              </p>
-              <div className="mt-10">
-                <Link
-                  href={ctaHref}
-                  className="inline-flex items-center justify-center rounded-md bg-white px-6 py-3 text-base font-medium text-neutral-900 hover:bg-neutral-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-neutral-900 transition-colors shadow-lg"
-                >
-                  {ctaText}
-                </Link>
-              </div>
-            </div>
+    <section className="relative isolate flex min-h-[72svh] items-end overflow-hidden bg-forest md:min-h-[70vh] md:items-center lg:min-h-[85vh]">
+      <Image
+        src={heroImageSrc}
+        alt={heroImageAlt}
+        fill
+        preload
+        quality={75}
+        sizes="100vw"
+        className="-z-20 object-cover object-center"
+      />
+      {/* Forest gradient — strongest bottom-left where the copy sits */}
+      <div
+        className="absolute inset-0 -z-10 bg-[linear-gradient(to_top,#0f1f17_0%,rgba(15,31,23,0.9)_40%,rgba(15,31,23,0.62)_75%,rgba(15,31,23,0.45)_100%)] md:bg-[linear-gradient(to_right,rgba(15,31,23,0.92)_0%,rgba(15,31,23,0.7)_40%,rgba(15,31,23,0.15)_80%),linear-gradient(to_top,#0f1f17_0%,rgba(15,31,23,0)_45%)]"
+        aria-hidden
+      />
+
+      <div className="container-lux pb-14 pt-28 md:py-24">
+        <div className="max-w-2xl">
+          <p className="eyebrow flex items-center gap-3">
+            <span className="gold-rule w-8" aria-hidden />
+            {eyebrow}
+          </p>
+          <h1 className="heading-serif mt-5 text-[2.6rem] text-cream sm:text-6xl lg:text-7xl">{headline}</h1>
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-cream/90">{subline}</p>
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
+            <Link href={ctaHref} className="btn btn-primary">
+              {ctaText}
+            </Link>
+            <a href={`tel:${contact.phoneHref}`} className="btn btn-secondary">
+              <PhoneIcon className="h-4 w-4" />
+              Call {contact.phone}
+            </a>
           </div>
         </div>
-      ) : (
-        <div className="relative w-screen left-1/2 -translate-x-1/2 h-[70vh] min-h-[420px] max-h-[900px] photo-placeholder">
-          <div className="absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-4xl text-center">
-              <h1 className="text-4xl font-bold tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl">
-                {headline}
-              </h1>
-              <p className="mx-auto mt-6 max-w-2xl text-lg text-neutral-600">{subline}</p>
-              <div className="mt-10">
-                <Link
-                  href={ctaHref}
-                  className="inline-flex items-center justify-center rounded-md bg-neutral-900 px-6 py-3 text-base font-medium text-white hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 transition-colors"
-                >
-                  {ctaText}
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      </div>
     </section>
   );
 }

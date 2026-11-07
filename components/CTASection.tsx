@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { contact } from "@/lib/data";
+import { PhoneIcon } from "@/components/Icons";
 
 interface CTASectionProps {
   title?: string;
@@ -14,19 +16,23 @@ export function CTASection({
   buttonHref = "/contact",
 }: CTASectionProps) {
   return (
-    <section className="bg-neutral-900 pt-16 sm:pt-20 lg:pt-24 pb-16 sm:pb-20 lg:pb-24 min-h-screen flex flex-col justify-center">
-      <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-          {title}
-        </h2>
-        <p className="mx-auto mt-4 max-w-xl text-lg text-neutral-300">{description}</p>
-        <div className="mt-8">
-          <Link
-            href={buttonHref}
-            className="inline-flex items-center justify-center rounded-md bg-white px-6 py-3 text-base font-medium text-neutral-900 hover:bg-neutral-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-neutral-900 transition-colors"
-          >
+    <section className="relative overflow-hidden border-t border-surface-line bg-surface">
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(201,168,106,0.12),transparent_60%)]"
+        aria-hidden
+      />
+      <div className="container-lux relative section-pad text-center">
+        <span className="gold-rule mx-auto" aria-hidden />
+        <h2 className="heading-serif mx-auto mt-8 max-w-3xl text-4xl text-cream sm:text-5xl lg:text-6xl">{title}</h2>
+        <p className="mx-auto mt-5 max-w-xl text-lg text-body">{description}</p>
+        <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row sm:gap-4">
+          <Link href={buttonHref} className="btn btn-primary">
             {buttonText}
           </Link>
+          <a href={`tel:${contact.phoneHref}`} className="btn btn-secondary">
+            <PhoneIcon className="h-4 w-4" />
+            Call or Text {contact.phone}
+          </a>
         </div>
       </div>
     </section>

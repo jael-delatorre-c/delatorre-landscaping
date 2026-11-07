@@ -14,3 +14,14 @@ export const PORTFOLIO_IMAGES = [
   "/portfolio/20230603_151727.jpg",        // Vine Installation & Maintenance
   "/portfolio/IMG_20170811_172934203.jpg", // Bush Trimming
 ] as const;
+
+export const HERO_IMAGE_ALT =
+  "Backyard pool surrounded by a stone patio, manicured lawn, and landscaped garden beds";
+
+/** Card images for the services section. Snow and tree work use an icon panel instead. */
+export const SERVICE_IMAGES = {
+  weekly: "/portfolio/IMG_20210616_101017.jpg",
+  garden: "/portfolio/IMG_20230603_144136.jpg",
+  clearing: "/portfolio/20250620_094855.jpg",
+  seasonal: "/portfolio/IMG_20210616_112129.jpg",
+} as const;
