@@ -1,9 +1,12 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { LOGO_PATH } from "@/lib/images";
+import { contact } from "@/lib/data";
+import { CloseIcon, MenuIcon, PhoneIcon } from "@/components/Icons";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -15,47 +18,77 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
+function isActivePath(pathname: string, href: string) {
+  return pathname === href || (href !== "/" && pathname.startsWith(href + "/"));
+}
+
 export function Navbar() {
   const pathname = usePathname() ?? "";
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
+
+  const closeMenu = () => setMenuOpen(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white shadow-sm">
+    <header
+      className={`sticky top-0 z-50 bg-forest/95 backdrop-blur supports-[backdrop-filter]:bg-forest/85 transition-[box-shadow,border-color] duration-300 border-b ${
+        scrolled || menuOpen
+          ? "border-surface-line shadow-[0_10px_30px_-12px_rgba(0,0,0,0.6)]"
+          : "border-transparent"
+      }`}
+    >
       <nav
-        className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8"
+        className="container-lux flex h-[72px] items-center justify-between gap-4 lg:h-20"
         role="navigation"
         aria-label="Main navigation"
       >
         <Link
           href="/"
-          className="flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 rounded transition-opacity hover:opacity-90"
+          onClick={closeMenu}
+          className="shrink-0 rounded-md bg-cream px-2.5 py-1.5 transition-opacity hover:opacity-90"
           aria-label="Delatorre Landscaping home"
         >
           <Image
             src={LOGO_PATH}
             alt="Delatorre Landscaping"
-            width={160}
-            height={48}
-            className="h-10 w-auto object-contain"
-            priority
+            width={140}
+            height={53}
+            className="h-9 w-auto object-contain lg:h-10"
+            preload
           />
         </Link>
-        <ul className="hidden items-center gap-1 md:flex">
+
+        <ul className="hidden items-center gap-0.5 xl:flex">
           {navLinks.map(({ href, label }) => {
-            const isActive = pathname === href || (href !== "/" && pathname.startsWith(href + "/"));
+            const active = isActivePath(pathname, href);
             return (
               <li key={href}>
                 <Link
                   href={href}
-                  className={`relative rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 ${
-                    isActive
-                      ? "text-neutral-900"
-                      : "text-neutral-600 hover:text-neutral-900"
+                  aria-current={active ? "page" : undefined}
+                  className={`relative rounded px-3 py-2 text-[0.9rem] font-medium transition-colors duration-200 ${
+                    active ? "text-gold" : "text-cream hover:text-gold"
                   }`}
                 >
                   {label}
                   <span
-                    className={`absolute bottom-0 left-2 right-2 h-0.5 rounded-full bg-neutral-900 transition-opacity duration-200 ${
-                      isActive ? "opacity-100" : "opacity-0"
+                    className={`absolute inset-x-3 -bottom-0.5 h-px bg-gold transition-opacity duration-200 ${
+                      active ? "opacity-100" : "opacity-0"
                     }`}
                     aria-hidden
                   />
@@ -64,14 +97,71 @@ export function Navbar() {
             );
           })}
         </ul>
-        <Link
-          href="/contact"
-          className="inline-flex items-center justify-center rounded-lg bg-neutral-900 px-5 py-2.5 text-sm font-medium text-white shadow transition-all duration-200 hover:bg-neutral-800 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2"
-          aria-label="Get a quote"
-        >
-          Get a Quote
-        </Link>
+
+        <div className="flex items-center gap-2 sm:gap-4">
+          <a
+            href={`tel:${contact.phoneHref}`}
+            className="hidden items-center gap-2 text-sm font-medium text-cream transition-colors hover:text-gold lg:inline-flex"
+          >
+            <PhoneIcon className="h-4 w-4 text-gold" />
+            Call {contact.phone}
+          </a>
+          <Link href="/contact" onClick={closeMenu} className="btn btn-primary btn-sm hidden sm:inline-flex">
+            Get a Quote
+          </Link>
+          {/* Mobile tap-to-call */}
+          <a
+            href={`tel:${contact.phoneHref}`}
+            className="inline-flex h-11 w-11 items-center justify-center rounded-md border border-gold/60 text-gold transition-colors hover:bg-gold hover:text-forest lg:hidden"
+            aria-label={`Call ${contact.phone}`}
+          >
+            <PhoneIcon className="h-5 w-5" />
+          </a>
+          <button
+            type="button"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-md text-cream transition-colors hover:text-gold xl:hidden"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            onClick={() => setMenuOpen((o) => !o)}
+          >
+            {menuOpen ? <CloseIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
+          </button>
+        </div>
       </nav>
+
+      {menuOpen && (
+        <div id="mobile-menu" className="border-t border-surface-line bg-forest xl:hidden">
+          <ul className="container-lux flex flex-col py-4">
+            {navLinks.map(({ href, label }) => {
+              const active = isActivePath(pathname, href);
+              return (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    onClick={closeMenu}
+                    aria-current={active ? "page" : undefined}
+                    className={`block border-b border-surface-line/60 py-3.5 font-serif text-2xl transition-colors ${
+                      active ? "text-gold" : "text-cream hover:text-gold"
+                    }`}
+                  >
+                    {label}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+          <div className="container-lux flex flex-col gap-3 pb-6 sm:flex-row">
+            <Link href="/contact" onClick={closeMenu} className="btn btn-primary w-full sm:w-auto">
+              Get a Free Estimate
+            </Link>
+            <a href={`tel:${contact.phoneHref}`} className="btn btn-secondary w-full sm:w-auto">
+              <PhoneIcon className="h-4 w-4" />
+              Call {contact.phone}
+            </a>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

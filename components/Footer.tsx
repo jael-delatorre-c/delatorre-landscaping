@@ -12,61 +12,78 @@ const footerLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
+const linkClass = "text-sm text-body transition-colors hover:text-gold";
+
 export function Footer() {
   return (
-    <footer className="border-t border-neutral-200 bg-neutral-50">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+    <footer className="border-t border-surface-line bg-forest">
+      <div className="container-lux py-16 md:py-20">
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1.2fr_1fr]">
           <div>
-            <Link href="/" className="inline-block" aria-label="Delatorre Landscaping home">
+            <Link
+              href="/"
+              className="inline-block rounded-md bg-cream px-3 py-2 transition-opacity hover:opacity-90"
+              aria-label="Delatorre Landscaping home"
+            >
               <Image
                 src={LOGO_PATH}
                 alt="Delatorre Landscaping"
-                width={140}
-                height={42}
-                className="h-9 w-auto object-contain"
+                width={150}
+                height={57}
+                className="h-10 w-auto object-contain"
               />
             </Link>
-            <p className="mt-2 text-sm text-neutral-600">
+            <p className="mt-5 max-w-xs font-serif text-xl leading-snug text-cream">
               A higher standard of landscaping in Dutchess County.
             </p>
+            <p className="mt-3 text-sm text-body-muted">Family owned · Se habla español</p>
           </div>
+
           <div>
-            <h3 className="text-sm font-semibold text-neutral-900">Quick Links</h3>
-            <ul className="mt-4 space-y-2">
+            <h2 className="eyebrow">Quick Links</h2>
+            <ul className="mt-5 space-y-3">
               {footerLinks.map(({ href, label }) => (
                 <li key={href}>
-                  <Link
-                    href={href}
-                    className="text-sm text-neutral-600 hover:text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 rounded transition-colors"
-                  >
+                  <Link href={href} className={linkClass}>
                     {label}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
+
           <div>
-            <h3 className="text-sm font-semibold text-neutral-900">Contact</h3>
-            <p className="mt-4 text-sm text-neutral-600">
-              <a href={`tel:${contact.phone.replace(/\D/g, "")}`} className="hover:text-neutral-900 transition-colors">
-                {contact.phone}
-              </a>
-            </p>
-            <p className="text-sm text-neutral-600">
-              <a href={`mailto:${contact.email}`} className="hover:text-neutral-900 transition-colors">
-                {contact.email}
-              </a>
-            </p>
-            <p className="text-sm text-neutral-600">{contact.address}</p>
+            <h2 className="eyebrow">Contact</h2>
+            <ul className="mt-5 space-y-3">
+              <li>
+                <a href={`tel:${contact.phoneHref}`} className={linkClass}>
+                  {contact.phone}
+                </a>
+              </li>
+              <li>
+                <a href={`mailto:${contact.email}`} className={`${linkClass} break-all`}>
+                  {contact.email}
+                </a>
+              </li>
+              <li className="text-sm text-body">{contact.address}</li>
+            </ul>
           </div>
+
           <div>
-            <h3 className="text-sm font-semibold text-neutral-900">Service Areas</h3>
-            <p className="mt-4 text-sm text-neutral-600">{serviceAreas.join(", ")}</p>
+            <h2 className="eyebrow">Service Areas</h2>
+            <ul className="mt-5 space-y-3">
+              {serviceAreas.map((area) => (
+                <li key={area} className="text-sm text-body">
+                  {area}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
-        <div className="mt-12 border-t border-neutral-200 pt-8 text-center text-sm text-neutral-500">
+
+        <div className="mt-14 flex flex-col gap-2 border-t border-surface-line pt-8 text-sm text-body-muted sm:flex-row sm:justify-between">
           <p>&copy; {new Date().getFullYear()} Delatorre Landscaping. All rights reserved.</p>
+          <p>Poughkeepsie · Dutchess County, NY</p>
         </div>
       </div>
     </footer>

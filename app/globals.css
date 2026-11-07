@@ -1,45 +1,180 @@
 @import "tailwindcss";
 
+/* ------------------------------------------------------------------
+   Design tokens — dark & luxurious
+   Every color in the UI should come from these tokens.
+------------------------------------------------------------------ */
 :root {
-  --background: #f6f3ea;
-  --foreground: #171717;
-  --accent: #2d5016;
-  --gradient-base: #f6f3ea;
-  --gradient-sage: #e7efe6;
-  --gradient-warm: #eef0ea;
+  --forest: #0f1f17;        /* page background */
+  --surface: #16291f;       /* cards / alternate dark sections */
+  --surface-line: #2a4234;  /* hairlines on dark */
+  --cream: #f5f1e8;         /* light sections + headings on dark */
+  --ink: #1a1a1a;           /* text on cream */
+  --ink-muted: #4a4a45;     /* secondary text on cream (AA) */
+  --cream-line: #ddd5c3;    /* hairlines on cream */
+  --gold: #c9a86a;          /* accent */
+  --gold-hover: #b8955a;
+  --gold-deep: #7a5c24;     /* gold for text on cream (AA 5.5:1) */
+  --body: #c8cfc9;          /* body text on dark */
+  --body-muted: #a3aea6;    /* tertiary text on dark (AA on forest + surface) */
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-forest: var(--forest);
+  --color-surface: var(--surface);
+  --color-surface-line: var(--surface-line);
+  --color-cream: var(--cream);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-cream-line: var(--cream-line);
+  --color-gold: var(--gold);
+  --color-gold-hover: var(--gold-hover);
+  --color-gold-deep: var(--gold-deep);
+  --color-body: var(--body);
+  --color-body-muted: var(--body-muted);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-cormorant), ui-serif, Georgia, serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
-  background: linear-gradient(180deg, var(--gradient-sage) 0%, var(--gradient-warm) 40%, var(--gradient-base) 100%);
-  background-attachment: fixed;
-  min-height: 100vh;
-  color: var(--foreground);
-  font-family: var(--font-sans), system-ui, sans-serif;
+  background: var(--forest);
+  color: var(--body);
+  font-family: var(--font-sans);
   overflow-x: hidden;
 }
 
-/* Photo placeholder - square/rectangular block for future images */
-.photo-placeholder {
-  background: rgba(0, 0, 0, 0.06);
-  border: 1px dashed rgba(0, 0, 0, 0.12);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(0, 0, 0, 0.25);
-  font-size: 0.75rem;
-  letter-spacing: 0.02em;
+::selection {
+  background: var(--gold);
+  color: var(--forest);
+}
+
+/* ------------------------------------------------------------------
+   Reusable primitives
+------------------------------------------------------------------ */
+@layer components {
+  .container-lux {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 1200px;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 640px) {
+    .container-lux {
+      padding-inline: 2rem;
+    }
+  }
+
+  .section-pad {
+    padding-block: 4.5rem;
+  }
+  @media (min-width: 768px) {
+    .section-pad {
+      padding-block: 6.5rem;
+    }
+  }
+
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .eyebrow-on-light {
+    color: var(--gold-deep);
+  }
+
+  .heading-serif {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.08;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 0.375rem;
+    padding: 0.85rem 1.6rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease,
+      transform 200ms ease, box-shadow 200ms ease;
+  }
+  .btn:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--forest);
+  }
+  .btn-primary:hover {
+    background: var(--gold-hover);
+    box-shadow: 0 8px 24px -10px rgb(201 168 106 / 0.55);
+  }
+  .btn-secondary {
+    border: 1px solid rgb(245 241 232 / 0.55);
+    color: var(--cream);
+  }
+  .btn-secondary:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .btn-sm {
+    padding: 0.6rem 1.15rem;
+    font-size: 0.875rem;
+  }
+
+  .gold-rule {
+    display: block;
+    height: 1px;
+    width: 3rem;
+    background: var(--gold);
+  }
+
+  /* Form fields on dark backgrounds */
+  .field {
+    display: block;
+    width: 100%;
+    border-radius: 0.375rem;
+    border: 1px solid var(--surface-line);
+    background: var(--forest);
+    padding: 0.8rem 0.95rem;
+    color: var(--cream);
+    font-size: 1rem;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+  }
+  .field::placeholder {
+    color: var(--body-muted);
+  }
+  .field:hover {
+    border-color: #3d5a49;
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgb(201 168 106 / 0.3);
+  }
 }
 
 /* Focus visible for keyboard users */
 :focus-visible {
-  outline: 2px solid currentColor;
+  outline: 2px solid var(--gold);
   outline-offset: 2px;
 }
 
@@ -66,15 +201,42 @@ body {
   white-space: normal;
 }
 
+/* ------------------------------------------------------------------
+   Scroll reveal — progressive enhancement only.
+   Content is visible by default. JS opts an element into the hidden
+   state only if it is below the fold, IntersectionObserver exists and
+   the user has not asked for reduced motion.
+------------------------------------------------------------------ */
+[data-reveal] {
+  transition: opacity 450ms ease-out, transform 450ms ease-out;
+}
+[data-reveal="hidden"] {
+  opacity: 0;
+  transform: translateY(12px);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-reveal="hidden"] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /* Page transition on navigation */
 @keyframes page-enter {
   from {
-    opacity: 0;
+    opacity: 0.4;
   }
   to {
     opacity: 1;
   }
 }
 .animate-page-enter {
-  animation: page-enter 0.25s ease-out forwards;
+  animation: page-enter 0.25s ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-page-enter {
+    animation: none;
+  }
 }
