@@ -1,7 +1,10 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { services } from "@/lib/data";
+import { CTASection } from "@/components/CTASection";
+import { SnowflakeIcon, TreeIcon } from "@/components/Icons";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -24,41 +27,48 @@ export default async function ServiceDetailPage({ params }: Props) {
   const service = services.find((s) => s.slug === slug);
   if (!service) notFound();
 
+  const Icon = service.icon === "snow" ? SnowflakeIcon : TreeIcon;
+
   return (
     <>
-      <section className="py-16 sm:py-20 lg:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Link
-            href="/services"
-            className="text-sm font-medium text-neutral-600 hover:text-neutral-900"
-          >
+      <section className="section-pad bg-forest">
+        <div className="container-lux">
+          <Link href="/services" className="text-sm font-medium text-gold transition-colors hover:text-gold-hover">
             ← Back to Services
           </Link>
-          <h1 className="mt-6 text-4xl font-bold tracking-tight text-neutral-900">
-            {service.name}
-          </h1>
-          <p className="mt-4 max-w-2xl text-lg text-neutral-600">
-            {service.description}
-          </p>
-          <div className="mt-10 aspect-video max-w-4xl rounded-lg photo-placeholder" aria-hidden>
-            [Photo]
+          <div className="mt-10 grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+            <div>
+              <p className="eyebrow">{service.seasonal ? "Seasonal Service" : "Service"}</p>
+              <h1 className="heading-serif mt-4 text-5xl text-cream sm:text-6xl">{service.name}</h1>
+              <p className="mt-6 text-lg leading-relaxed text-body">{service.description}</p>
+              <Link href="/contact" className="btn btn-primary mt-9">
+                Get a Quote
+              </Link>
+            </div>
+            <div className="relative aspect-[4/3] overflow-hidden rounded-lg border border-surface-line bg-surface">
+              {service.image ? (
+                <Image
+                  src={service.image}
+                  alt={service.imageAlt ?? service.name}
+                  fill
+                  preload
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 560px"
+                />
+              ) : (
+                <div
+                  className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(ellipse_at_30%_20%,#2a4234_0%,#16291f_55%,#0f1f17_100%)]"
+                  role="img"
+                  aria-label={`${service.name} illustration`}
+                >
+                  <Icon className="h-24 w-24 text-gold/80" />
+                </div>
+              )}
+            </div>
           </div>
-          <p className="mt-8 text-neutral-600">
-            [Additional service detail copy placeholder. Expand with [Service Name] specifics.]
-          </p>
         </div>
       </section>
-      <section className="border-t border-neutral-200 bg-neutral-50 py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl font-bold text-neutral-900">Get a quote for this service</h2>
-          <Link
-            href="/contact"
-            className="mt-4 inline-flex items-center justify-center rounded-md bg-neutral-900 px-6 py-3 text-base font-medium text-white hover:bg-neutral-800"
-          >
-            Get a Quote
-          </Link>
-        </div>
-      </section>
+      <CTASection title="Get a quote for this service" />
     </>
   );
 }

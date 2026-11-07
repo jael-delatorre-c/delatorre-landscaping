@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { CTASection } from "@/components/CTASection";
+import { PageHeader } from "@/components/PageHeader";
 import { serviceAreas } from "@/lib/data";
 
 export const metadata: Metadata = {
@@ -10,21 +11,19 @@ export const metadata: Metadata = {
 export default function ServiceAreasPage() {
   return (
     <>
-      <section className="py-16 sm:py-20 lg:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold tracking-tight text-neutral-900">
-            Service Areas
-          </h1>
-          <p className="mt-4 max-w-2xl text-lg text-neutral-600">
-            We serve Dutchess County and surrounding communities.
-          </p>
-          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" role="list">
+      <PageHeader eyebrow="Where We Work" title="Service Areas">
+        We serve Dutchess County and surrounding communities.
+      </PageHeader>
+      <section className="section-pad bg-forest">
+        <div className="container-lux">
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" role="list">
             {serviceAreas.map((city) => (
               <li
                 key={city}
-                className="rounded-lg border border-neutral-200 bg-white px-4 py-3 text-neutral-900"
+                className="flex items-center gap-4 rounded-lg border border-surface-line bg-surface px-6 py-5"
               >
-                {city}
+                <span className="h-1.5 w-1.5 shrink-0 rotate-45 bg-gold" aria-hidden />
+                <span className="heading-serif text-2xl text-cream">{city}</span>
               </li>
             ))}
           </ul>

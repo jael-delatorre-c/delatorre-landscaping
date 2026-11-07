@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import type { ReactNode } from "react";
 import { CTASection } from "@/components/CTASection";
 import { ABOUT_IMAGE } from "@/lib/images";
 
@@ -9,91 +10,111 @@ export const metadata: Metadata = {
   description: "Delatorre Landscaping — a higher standard of landscaping in Dutchess County, NY. Locally owned, 25+ years experience.",
 };
 
+function Block({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <div className="border-t border-cream-line pt-8">
+      <h2 className="heading-serif text-3xl text-ink">{title}</h2>
+      <div className="mt-4 space-y-4 text-[1.0625rem] leading-relaxed text-ink-muted">{children}</div>
+    </div>
+  );
+}
+
+function GoldList({ items }: { items: string[] }) {
+  return (
+    <ul className="space-y-2.5">
+      {items.map((item) => (
+        <li key={item} className="flex gap-3">
+          <span className="mt-[0.6em] h-1.5 w-1.5 shrink-0 rotate-45 bg-gold-deep" aria-hidden />
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export default function AboutPage() {
   return (
     <>
-      <section className="py-16 sm:py-20 lg:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold tracking-tight text-neutral-900">
-            About Delatorre Landscaping
-          </h1>
-          <p className="mt-6 text-xl text-neutral-600">
-            A higher standard of landscaping in Dutchess County
-          </p>
-          <p className="mt-6 max-w-2xl text-lg text-neutral-600">
-            Delatorre Landscaping is a locally owned landscaping company serving Dutchess County, NY. While the company officially launched in 2022, our experience goes back 25+ years—built through hands-on work, learning what lasts, and understanding what homeowners and businesses actually need to keep a property looking sharp.
-          </p>
-          <p className="mt-4 max-w-2xl text-lg text-neutral-600">
-            We handle both residential and commercial landscaping, and we take pride in work that looks clean, intentional, and professionally finished.
-          </p>
-          <div className="mt-12 aspect-video max-w-3xl relative rounded-lg overflow-hidden bg-neutral-200">
+      <section className="section-pad bg-forest">
+        <div className="container-lux grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          <div>
+            <p className="eyebrow flex items-center gap-3">
+              <span className="gold-rule w-8" aria-hidden />
+              Our Story
+            </p>
+            <h1 className="heading-serif mt-5 text-5xl text-cream sm:text-6xl">About Delatorre Landscaping</h1>
+            <p className="mt-6 font-serif text-2xl text-cream/90">
+              A higher standard of landscaping in Dutchess County
+            </p>
+            <p className="mt-6 text-lg leading-relaxed text-body">
+              Delatorre Landscaping is a locally owned landscaping company serving Dutchess County, NY. While the company officially launched in 2022, our experience goes back 25+ years—built through hands-on work, learning what lasts, and understanding what homeowners and businesses actually need to keep a property looking sharp.
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-body">
+              We handle both residential and commercial landscaping, and we take pride in work that looks clean, intentional, and professionally finished.
+            </p>
+          </div>
+          <div className="relative aspect-[4/5] overflow-hidden rounded-lg border border-surface-line bg-surface sm:aspect-[4/3] lg:aspect-[4/5]">
             <Image
               src={ABOUT_IMAGE}
               alt="Garden and planting beds in front of barn"
               fill
+              preload
               className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 896px"
+              sizes="(max-width: 1024px) 100vw, 560px"
             />
           </div>
-          <h2 className="mt-14 text-2xl font-bold text-neutral-900">
-            Why we started Delatorre Landscaping
-          </h2>
-          <p className="mt-4 max-w-2xl text-neutral-600">
-            After years in the industry, we started Delatorre Landscaping with a simple goal: deliver dependable landscaping with clean results, fair pricing, and real experience behind the work. We wanted to build a company where the details matter—straight edges, neat beds, and a property that looks better every time we leave.
-          </p>
-          <h2 className="mt-10 text-2xl font-bold text-neutral-900">
-            What we&apos;re known for
-          </h2>
-          <p className="mt-4 max-w-2xl text-neutral-600">
-            Clean lines. Consistent results. No shortcuts. We work efficiently, but we don&apos;t rush. Our pace is fast enough to stay on schedule—and careful enough to avoid mistakes. Whether it&apos;s weekly maintenance or a one-time project, we focus on doing it right the first time.
-          </p>
-          <h2 className="mt-10 text-2xl font-bold text-neutral-900">
-            Core services include
-          </h2>
-          <ul className="mt-4 list-disc space-y-2 pl-6 max-w-2xl text-neutral-600">
-            <li>Weekly Grounds Maintenance (mowing, edging, trimming, clean finish)</li>
-            <li>Garden & Bed Care (weeding, pruning, mulch refresh, seasonal touch-ups)</li>
-            <li>Property Clearing & Brush Management (overgrowth removal, cleanup, haul-away)</li>
-          </ul>
-          <p className="mt-4 max-w-2xl text-neutral-600">
-            We also offer seasonal work and larger projects depending on the property and the job.
-          </p>
-          <h2 className="mt-10 text-2xl font-bold text-neutral-900">
-            Flexible pricing that fits the job
-          </h2>
-          <p className="mt-4 max-w-2xl text-neutral-600">
-            We keep pricing straightforward and fair. Depending on the service, we offer:
-          </p>
-          <ul className="mt-4 list-disc space-y-2 pl-6 max-w-2xl text-neutral-600">
-            <li>Hourly work for smaller tasks and cleanups</li>
-            <li>Project-based quotes for bigger jobs</li>
-            <li>Weekly maintenance plans for consistent care all season</li>
-          </ul>
-          <h2 className="mt-10 text-2xl font-bold text-neutral-900">
-            Professional, prepared, and licensed
-          </h2>
-          <p className="mt-4 max-w-2xl text-neutral-600">
-            We show up ready to work with professional equipment, and we document results with before-and-after photos when helpful. We&apos;re also licensed, and we treat every property with respect—clean worksite, clean finish.
-          </p>
-          <h2 className="mt-10 text-2xl font-bold text-neutral-900">
-            Free estimates
-          </h2>
-          <p className="mt-4 max-w-2xl text-neutral-600">
-            We offer free estimates and make it easy to get started. Reach out however you prefer—call, text, email, or the contact form—and we&apos;ll take it from there.
-          </p>
-          <h2 className="mt-10 text-2xl font-bold text-neutral-900">
-            Serving all of Dutchess County, NY
-          </h2>
-          <p className="mt-4 max-w-2xl text-neutral-600">
-            Poughkeepsie and the surrounding areas. Get in touch for a free estimate.
-          </p>
-          <div className="mt-10">
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center rounded-md bg-neutral-900 px-6 py-3 text-base font-medium text-white hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 transition-colors"
-            >
-              Get a Free Estimate
-            </Link>
+        </div>
+      </section>
+
+      <section className="section-pad bg-cream text-ink">
+        <div className="container-lux grid gap-10 md:grid-cols-2 md:gap-x-16 md:gap-y-12">
+          <Block title="Why we started Delatorre Landscaping">
+            <p>
+              After years in the industry, we started Delatorre Landscaping with a simple goal: deliver dependable landscaping with clean results, fair pricing, and real experience behind the work. We wanted to build a company where the details matter—straight edges, neat beds, and a property that looks better every time we leave.
+            </p>
+          </Block>
+          <Block title="What we’re known for">
+            <p>
+              Clean lines. Consistent results. No shortcuts. We work efficiently, but we don&apos;t rush. Our pace is fast enough to stay on schedule—and careful enough to avoid mistakes. Whether it&apos;s weekly maintenance or a one-time project, we focus on doing it right the first time.
+            </p>
+          </Block>
+          <Block title="Core services include">
+            <GoldList
+              items={[
+                "Weekly Grounds Maintenance (mowing, edging, trimming, clean finish)",
+                "Garden & Bed Care (weeding, pruning, mulch refresh, seasonal touch-ups)",
+                "Property Clearing & Brush Management (overgrowth removal, cleanup, haul-away)",
+              ]}
+            />
+            <p>We also offer seasonal work and larger projects depending on the property and the job.</p>
+          </Block>
+          <Block title="Flexible pricing that fits the job">
+            <p>We keep pricing straightforward and fair. Depending on the service, we offer:</p>
+            <GoldList
+              items={[
+                "Hourly work for smaller tasks and cleanups",
+                "Project-based quotes for bigger jobs",
+                "Weekly maintenance plans for consistent care all season",
+              ]}
+            />
+          </Block>
+          <Block title="Professional, prepared, and licensed">
+            <p>
+              We show up ready to work with professional equipment, and we document results with before-and-after photos when helpful. We&apos;re also licensed, and we treat every property with respect—clean worksite, clean finish.
+            </p>
+          </Block>
+          <Block title="Free estimates">
+            <p>
+              We offer free estimates and make it easy to get started. Reach out however you prefer—call, text, email, or the contact form—and we&apos;ll take it from there.
+            </p>
+          </Block>
+          <div className="md:col-span-2">
+            <Block title="Serving all of Dutchess County, NY">
+              <p>Poughkeepsie and the surrounding areas. Get in touch for a free estimate.</p>
+              <Link href="/contact" className="btn btn-primary mt-4">
+                Get a Free Estimate
+              </Link>
+            </Block>
           </div>
         </div>
       </section>
