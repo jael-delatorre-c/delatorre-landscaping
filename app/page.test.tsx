@@ -36,4 +36,32 @@ describe("HomePage", () => {
     expect(screen.getByText("Vine Installation & Maintenance")).toBeInTheDocument();
     expect(screen.getByText("Bush Trimming")).toBeInTheDocument();
   });
+
+  it("hero headline reads 'Lasting Results.'", () => {
+    render(<HomePage />);
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      "Premium Landscaping. Clean Lines. Lasting Results."
+    );
+  });
+
+  it("no heading shows literal square-bracket placeholders", () => {
+    render(<HomePage />);
+    for (const h of screen.getAllByRole("heading")) {
+      expect(h.textContent).not.toMatch(/[\[\]]/);
+    }
+    expect(screen.getByRole("heading", { name: "Featured Projects" })).toBeInTheDocument();
+  });
+
+  it("every image has descriptive alt text", () => {
+    const { container } = render(<HomePage />);
+    for (const img of container.querySelectorAll("img")) {
+      expect(img.getAttribute("alt")?.trim()).toBeTruthy();
+    }
+  });
+
+  it("content is visible by default (no opacity-0 before JS runs)", () => {
+    const { container } = render(<HomePage />);
+    expect(container.querySelector('[data-reveal="hidden"]')).toBeNull();
+    expect(container.querySelector(".opacity-0")).toBeNull();
+  });
 });
